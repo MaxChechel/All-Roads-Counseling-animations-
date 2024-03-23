@@ -5,32 +5,6 @@ import imagesLoaded from "imagesloaded";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 const svgs = document.querySelectorAll(".svg-parent");
-function setViewBox(svg, svgPath) {
-  const svgContainer = svg.parentElement;
-  const svgWidth = svgContainer.clientWidth;
-  const svgHeight = svgContainer.clientHeight;
-
-  // Get the bounding box of the SVG path
-  const pathBounds = svgPath.getBBox();
-  const pathAspectRatio = pathBounds.width / pathBounds.height;
-
-  // Calculate the viewBox dimensions based on the aspect ratio of the path
-  let viewBoxWidth, viewBoxHeight;
-  if (svgWidth / svgHeight > pathAspectRatio) {
-    viewBoxWidth = pathBounds.width;
-    viewBoxHeight = viewBoxWidth * (svgHeight / svgWidth);
-  } else {
-    viewBoxHeight = pathBounds.height;
-    viewBoxWidth = viewBoxHeight * (svgWidth / svgHeight);
-  }
-
-  // Set the viewBox attribute of the SVG
-  svg.setAttribute(
-    "viewBox",
-    `${pathBounds.x} ${pathBounds.y} ${viewBoxWidth} ${viewBoxHeight}`
-  );
-  console.log("viewbox set");
-}
 
 function initMotionPath() {
   // Register MotionPathPlugin here to avoid multiple registrations
@@ -95,13 +69,7 @@ function initMotionPath() {
   // Call createTweens on DOMContentLoaded
   document.addEventListener("DOMContentLoaded", function () {
     imagesLoaded(".page-wrapper", () => {
-      svgs.forEach((svg) => {
-        const svgPath = svg.querySelector("path");
-        setViewBox(svg, svgPath);
-      });
-      setTimeout(() => {
-        createTweens(svgs);
-      }, 1000);
+      createTweens(svgs);
     });
   });
 
@@ -119,10 +87,6 @@ function initMotionPath() {
 
   // Create a debounced version of the resize function
   const debouncedResize = debounce(function () {
-    svgs.forEach((svg) => {
-      const svgPath = svg.querySelector("path");
-      setViewBox(svg, svgPath);
-    });
     createTweens(svgs);
   }, 200); // Adjust the delay as needed
 
