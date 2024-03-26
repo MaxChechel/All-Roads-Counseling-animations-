@@ -592,22 +592,22 @@ var _motionPathPlugin = require("gsap/MotionPathPlugin");
 var _imagesloaded = require("imagesloaded");
 var _imagesloadedDefault = parcelHelpers.interopDefault(_imagesloaded);
 (0, _gsapDefault.default).registerPlugin((0, _scrollTrigger.ScrollTrigger), (0, _motionPathPlugin.MotionPathPlugin));
-const svgs = document.querySelectorAll(".bg-animated_svg");
-function initMotionPath() {
+const bgSvgs = document.querySelectorAll(".bg-animated_svg");
+function initBgMotionPath() {
     // Register MotionPathPlugin here to avoid multiple registrations
     (0, _gsapDefault.default).registerPlugin((0, _motionPathPlugin.MotionPathPlugin), (0, _scrollTrigger.ScrollTrigger));
     (0, _scrollTrigger.ScrollTrigger).normalizeScroll(true);
     // declare an array to store tweens
     let tweens = [];
     // function to create and manage tweens
-    function createTweens(svgs) {
+    function createTweens(bgSvgs) {
         // destroy existing tweens
         tweens.forEach((tween)=>{
             tween && tween.kill();
         });
         tweens = [];
         // iterate over each SVG
-        svgs.forEach((svg, i)=>{
+        bgSvgs.forEach((svg, i)=>{
             const pathLength = svg.querySelector("path").getTotalLength();
             const timeToPlay = pathLength / 100 * 4;
             const movingIcon = svg.querySelector("#moving-icon");
@@ -643,7 +643,7 @@ function initMotionPath() {
     // Call createTweens on DOMContentLoaded
     document.addEventListener("DOMContentLoaded", function() {
         (0, _imagesloadedDefault.default)(".page-wrapper", ()=>{
-            createTweens(svgs);
+            createTweens(bgSvgs);
         });
     });
     function debounce(func, delay) {
@@ -659,13 +659,13 @@ function initMotionPath() {
     }
     // Create a debounced version of the resize function
     const debouncedResize = debounce(function() {
-        createTweens(svgs);
+        createTweens(bgSvgs);
     }, 200); // Adjust the delay as needed
     // Update tweens on window resize, using the debounced version
     window.addEventListener("resize", debouncedResize);
 }
 // Call initMotionPath to initialize motion paths
-initMotionPath();
+initBgMotionPath();
 
 },{"gsap":"fPSuC","gsap/ScrollTrigger":"7wnFk","gsap/MotionPathPlugin":"3pHNs","imagesloaded":"aYzyZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fPSuC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

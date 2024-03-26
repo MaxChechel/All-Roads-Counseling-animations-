@@ -4,9 +4,9 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import imagesLoaded from "imagesloaded";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-const svgs = document.querySelectorAll(".bg-animated_svg");
+const bgSvgs = document.querySelectorAll(".bg-animated_svg");
 
-function initMotionPath() {
+function initBgMotionPath() {
   // Register MotionPathPlugin here to avoid multiple registrations
   gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
   ScrollTrigger.normalizeScroll(true);
@@ -14,7 +14,7 @@ function initMotionPath() {
   let tweens = [];
 
   // function to create and manage tweens
-  function createTweens(svgs) {
+  function createTweens(bgSvgs) {
     // destroy existing tweens
     tweens.forEach((tween) => {
       tween && tween.kill();
@@ -22,9 +22,10 @@ function initMotionPath() {
     tweens = [];
 
     // iterate over each SVG
-    svgs.forEach((svg, i) => {
+    bgSvgs.forEach((svg, i) => {
       const pathLength = svg.querySelector("path").getTotalLength();
       const timeToPlay = (pathLength / 100) * 4;
+      const timeDelay = Math.floor(Math.random() * 3) + 1;
 
       const movingIcon = svg.querySelector("#moving-icon");
 
@@ -48,6 +49,7 @@ function initMotionPath() {
           start: 0,
           end: 1,
         },
+        delay: timeDelay,
         duration: timeToPlay,
         repeat: -1,
         repeatDelay: 1 * i,
@@ -60,7 +62,7 @@ function initMotionPath() {
   // Call createTweens on DOMContentLoaded
   document.addEventListener("DOMContentLoaded", function () {
     imagesLoaded(".page-wrapper", () => {
-      createTweens(svgs);
+      createTweens(bgSvgs);
     });
   });
 
@@ -78,7 +80,7 @@ function initMotionPath() {
 
   // Create a debounced version of the resize function
   const debouncedResize = debounce(function () {
-    createTweens(svgs);
+    createTweens(bgSvgs);
   }, 200); // Adjust the delay as needed
 
   // Update tweens on window resize, using the debounced version
@@ -86,4 +88,4 @@ function initMotionPath() {
 }
 
 // Call initMotionPath to initialize motion paths
-initMotionPath();
+initBgMotionPath();
